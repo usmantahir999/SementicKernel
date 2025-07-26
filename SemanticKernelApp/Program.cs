@@ -35,9 +35,10 @@ class Program
     }
     static async Task Main(string[] args)
     {
-        await TestAzureOpenAIChatCompletion();
-        await TestTimePlugin();
-        await TestConversationPlugin();
+       // await TestAzureOpenAIChatCompletion();
+       // await TestTimePlugin();
+       // await TestConversationSummaryPlugin();
+        await TestCareerAdvisory();
     }
 
     //chat completion app
@@ -65,9 +66,9 @@ class Program
        Console.ReadKey();
     }
 
-    private static async Task TestConversationPlugin()
+    private static async Task TestConversationSummaryPlugin()
     {
-        Console.WriteLine("Enter your inquiry!");
+        Console.WriteLine("Enter converation of your inquiry!");
         var prompt = Console.ReadLine();
         Console.WriteLine("******* Action Items ************");
         var actionItemResult = await _kernel.InvokeAsync("ConversationSummaryPlugin", "GetConversationActionItems",
@@ -85,6 +86,21 @@ class Program
             arguments: new() { { "input", prompt } });
         Console.WriteLine(summaryResult);
 
+    }
+
+    private static async Task TestCareerAdvisory()
+    {
+        Console.WriteLine("Enter your Career History!");
+        var carrerHistory = Console.ReadLine();
+        string prompt = @"This is the information about user background: {{$carrerHistory}}
+
+         Given the user background, provide a list of relevant carrer choices";
+
+        var result = await _kernel.InvokePromptAsync(prompt, new()
+        {
+            { "carrerHistory", carrerHistory }
+        });
+        Console.WriteLine(result);
     }
 
     private static async Task<string> GetChatCompletionAsync(string prompt)
