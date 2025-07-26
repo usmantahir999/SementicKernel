@@ -24,4 +24,13 @@
 	<PackageReference Include="Microsoft.SemanticKernel.Plugins.Core" Version="1.29.0-alpha" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Plugins\CareerCoach\config.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Plugins\CareerCoach\skprompt.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

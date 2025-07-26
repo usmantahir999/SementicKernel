@@ -6,6 +6,7 @@ using SemanticKernelApp.Config;
 class Program
 {
     private static readonly Kernel _kernel;
+    private static readonly KernelPlugin _plugins;
 
     static Program()
     {
@@ -24,6 +25,7 @@ class Program
         builder.Plugins.AddFromType<ConversationSummaryPlugin>();
 #pragma warning restore SKEXP0050 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
         _kernel = builder.Build();
+        _plugins = _kernel.CreatePluginFromPromptDirectory("Plugins");
     }
 
     private static IConfiguration LoadConfiguration()
@@ -35,10 +37,11 @@ class Program
     }
     static async Task Main(string[] args)
     {
-       // await TestAzureOpenAIChatCompletion();
-       // await TestTimePlugin();
-       // await TestConversationSummaryPlugin();
-        await TestCareerAdvisory();
+        // await TestAzureOpenAIChatCompletion();
+        // await TestTimePlugin();
+        // await TestConversationSummaryPlugin();
+        // await TestCareerAdvisory();
+        await TestCareerCoachPlugin();
     }
 
     //chat completion app
@@ -101,6 +104,18 @@ class Program
             { "carrerHistory", carrerHistory }
         });
         Console.WriteLine(result);
+    }
+
+    private static async Task TestCareerCoachPlugin()
+    {
+        Console.WriteLine("Enter your Career career or area of expertise!");
+        string careerFocus = Console.ReadLine();
+        var result = await _kernel.InvokeAsync(_plugins["CareerCoach"], new()
+        {
+            {"carrerFocus",careerFocus }
+        });
+        Console.WriteLine(result);
+        Console.ReadKey();
     }
 
     private static async Task<string> GetChatCompletionAsync(string prompt)

@@ -1,0 +1,20 @@
+{
+  "$schema": 1,
+  "type": "completion",
+  "description": "Recommend career paths to the user based on their current skillsets",
+  "execution_settings": {
+    "default": {
+      "max_tokens": 500,
+      "temperature": 0
+    }
+  },
+  "input_variables": [
+    {
+      "name": "careerFocus",
+      "description": "Users current career",
+      "required": true
+    }
+  ]
+
+  
+}
