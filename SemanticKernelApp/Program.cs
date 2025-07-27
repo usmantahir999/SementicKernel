@@ -2,6 +2,7 @@
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Plugins.Core;
 using SemanticKernelApp.Config;
+using SemanticKernelApp.Plugins.CareerHistoryPlugin;
 
 class Program
 {
@@ -25,6 +26,7 @@ class Program
         builder.Plugins.AddFromType<ConversationSummaryPlugin>();
 #pragma warning restore SKEXP0050 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
         _kernel = builder.Build();
+        _kernel.ImportPluginFromType<CareerTrackerPlugin>();
         _plugins = _kernel.CreatePluginFromPromptDirectory("Plugins");
     }
 
@@ -37,11 +39,12 @@ class Program
     }
     static async Task Main(string[] args)
     {
-        // await TestAzureOpenAIChatCompletion();
-        // await TestTimePlugin();
-        // await TestConversationSummaryPlugin();
-        // await TestCareerAdvisory();
-        await TestCareerCoachPlugin();
+         //await TestAzureOpenAIChatCompletion();
+         //await TestTimePlugin();
+         //await TestConversationSummaryPlugin();
+         //await TestCareerAdvisory();
+         //await TestCareerCoachPlugin();
+         await TestCareerTrackerPlugin();
     }
 
     //chat completion app
@@ -115,6 +118,33 @@ class Program
             {"carrerFocus",careerFocus }
         });
         Console.WriteLine(result);
+        Console.ReadKey();
+    }
+
+    private static async Task TestCareerTrackerPlugin()
+    {
+        Console.WriteLine("Enter job title");
+        var jobTitle = Console.ReadLine();
+        Console.WriteLine("Enter Company Name");
+        var companyName = Console.ReadLine();
+        var validRanks = new HashSet<string> { "Employee", "Supervisor", "Manager" };
+        string rank = string.Empty;
+        while (!validRanks.Contains(rank))
+        {
+            Console.WriteLine("Enter Rank (Employee, Supervisor, Manager):");
+            rank = Console.ReadLine();
+           
+        }
+        var result = await _kernel.InvokeAsync("CareerTrackerPlugin", "AddToCareerHistoryList", new()
+        {
+            { "title", jobTitle },
+            { "company", companyName },
+            { "rank", rank }
+        });
+        Console.WriteLine(result);
+        Console.WriteLine("Fetching updated career history...");
+        var careerHistory = await _kernel.InvokeAsync("CareerTrackerPlugin", "GetCareerHistory");
+        Console.WriteLine(careerHistory);
         Console.ReadKey();
     }
 

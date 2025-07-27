@@ -1,0 +1,52 @@
+﻿[
+  {
+    "title": "Project Manager",
+    "company": "TechNova Solutions",
+    "rank": 1
+  },
+  {
+    "title": "Senior Software Engineer",
+    "company": "CodeCrafters Inc.",
+    "rank": 2
+  },
+  {
+    "title": "Data Analyst",
+    "company": "InsightWorks",
+    "rank": 3
+  },
+  {
+    "title": "DevOps Engineer",
+    "company": "CloudSprint Technologies",
+    "rank": 4
+  },
+  {
+    "title": "UX/UI Designer",
+    "company": "PixelPerfect Studios",
+    "rank": 5
+  },
+  {
+    "title": "Backend Developer",
+    "company": "DataForge Systems",
+    "rank": 6
+  },
+  {
+    "title": "Frontend Developer",
+    "company": "BrightLayer Labs",
+    "rank": 7
+  },
+  {
+    "title": "QA Engineer",
+    "company": "AssureTesters",
+    "rank": 8
+  },
+  {
+    "title": "Product Owner",
+    "company": "AgileFlow Inc.",
+    "rank": 9
+  },
+  {
+    "title": "Business Analyst",
+    "company": "VisionEdge Analytics",
+    "rank": 10
+  }
+]

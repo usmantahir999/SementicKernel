@@ -25,6 +25,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Data\recentjobs.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Plugins\CareerCoach\config.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
