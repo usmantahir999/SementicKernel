@@ -9,10 +9,11 @@ namespace Chatbot.Controllers
     {
         private readonly SemanticKernelService _semanticKernelService = semanticKernelService;
 
-        [HttpGet]
-        public async Task<ActionResult> Index()
+        [HttpGet("{sessionId}")]
+        public async Task<ActionResult> GetMessagesAsync(string sessionId)
         {
-            return Ok("Welcome to the Chatbot API. Use the /GetChatResponseAsync endpoint to interact with the chatbot.");
+            var messages = await _chatService.GetMessagesAsync(sessionId);
+            return Ok(messages);
         }
 
         [HttpPost]
