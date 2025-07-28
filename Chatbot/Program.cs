@@ -1,8 +1,13 @@
+using Chatbot.Data;
 using Chatbot.Services;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlite("Data Source=chatbot.db"));
+
 builder.Services.AddSingleton<SemanticKernelService>();
 builder.Services.AddControllersWithViews();
 
