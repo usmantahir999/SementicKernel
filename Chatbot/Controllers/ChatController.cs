@@ -5,7 +5,7 @@ namespace Chatbot.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ChatController(SemanticKernelService semanticKernelService) : ControllerBase
+    public class ChatController(SemanticKernelService semanticKernelService, ChatService _chatService) : ControllerBase
     {
         private readonly SemanticKernelService _semanticKernelService = semanticKernelService;
 
@@ -18,7 +18,10 @@ namespace Chatbot.Controllers
         [HttpPost]
         public async Task<ActionResult> GetChatResponseAsync(ChatRequest request)
         {
-           var result = await _semanticKernelService.GetChatResponseAsync(request.UserMessage);
+            var sessionId = HttpContext.Session.Id; 
+            await _chatService.AddMessageAsync(sessionId, request.UserMessage, "User");
+            var result = await _semanticKernelService.GetChatResponseAsync(request.UserMessage);
+            await _chatService.AddMessageAsync(sessionId, result, "Bot");
             return Ok(result);
         }
     }
