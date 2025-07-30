@@ -1,4 +1,7 @@
-﻿using Microsoft.SemanticKernel;
+﻿using Chatbot.Data;
+using Microsoft.SemanticKernel;
+using Microsoft.SemanticKernel.ChatCompletion;
+using System.Text;
 
 namespace Chatbot.Services
 {
@@ -20,10 +23,32 @@ namespace Chatbot.Services
             _kernel = builder.Build();
         }
 
-        public async Task<string> GetChatResponseAsync(string prompt)
+        public async Task<string> GetChatResponseAsync(string userMessage, IEnumerable<ChatMessage> messages)
         {
-            var response = await _kernel.InvokePromptAsync(prompt);
-            Console.WriteLine($"Response: {response}");
+            var chatCompletionService = _kernel.GetRequiredService<IChatCompletionService>();
+            ChatHistory chatHistory = [];
+            foreach (var message in messages)
+            {
+                if (message.Sender == "User")
+                {
+                    chatHistory.AddUserMessage(message.Message);
+                }
+                else
+                {
+                    chatHistory.AddAssistantMessage(message.Message);
+                }
+            }
+            chatHistory.AddUserMessage(userMessage);
+            var result = chatCompletionService.GetStreamingChatMessageContentsAsync(
+            chatHistory: chatHistory,
+            kernel: _kernel
+                );
+
+            var response = new StringBuilder();
+            await foreach (var chunk in result)
+            {
+                response.Append(chunk);
+            }
             return response.ToString();
         }
     }

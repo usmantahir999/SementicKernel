@@ -16,15 +16,16 @@ namespace Chatbot.Services
             };
 
             _dbContext.ChatMessages.Add(chatMessage);
-            await _dbContext.SaveChangesAsync();
+           var res= await _dbContext.SaveChangesAsync();
+            Console.WriteLine(res);
         }
 
         public async Task<IEnumerable<ChatMessage>> GetMessagesAsync(string sessionId)
         {
             return await _dbContext.ChatMessages
-                .Where(m => m.SessionId == sessionId)
-                .OrderBy(m => m.Timestamp)
-                .ToListAsync();
+            .Where(m => m.SessionId == sessionId)
+            .OrderBy(m => m.Timestamp)
+            .ToListAsync();
         }
     }
 }

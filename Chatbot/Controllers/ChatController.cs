@@ -19,13 +19,14 @@ namespace Chatbot.Controllers
         [HttpPost]
         public async Task<ActionResult> GetChatResponseAsync(ChatRequest request)
         {
-            var sessionId = HttpContext.Session.Id; 
+            var sessionId = request.SessionId;
+            var messages = await _chatService.GetMessagesAsync(sessionId);
             await _chatService.AddMessageAsync(sessionId, request.UserMessage, "User");
-            var result = await _semanticKernelService.GetChatResponseAsync(request.UserMessage);
+            var result = await _semanticKernelService.GetChatResponseAsync(request.UserMessage, messages);
             await _chatService.AddMessageAsync(sessionId, result, "Bot");
             return Ok(result);
         }
     }
 
-    public record ChatRequest(string UserMessage);
+    public record ChatRequest(string UserMessage, string SessionId);
 }
