@@ -22,7 +22,8 @@ namespace Chatbot.Controllers
             var sessionId = request.SessionId;
             var messages = await _chatService.GetMessagesAsync(sessionId);
             await _chatService.AddMessageAsync(sessionId, request.UserMessage, "User");
-            var result = await _semanticKernelService.GetChatResponseAsync(request.UserMessage, messages);
+            //var result = await _semanticKernelService.GetChatResponseAsync(request.UserMessage, messages);
+            var result = await _semanticKernelService.GetChatResponseWithRagAsync(request.UserMessage);
             await _chatService.AddMessageAsync(sessionId, result, "Bot");
             return Ok(result);
         }
